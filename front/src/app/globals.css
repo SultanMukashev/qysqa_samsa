@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+.p-inputtext, .p-dropdown-item, .p-multiselect .p-multiselect-label {
+  padding: 2px !important;
+  font-size: 13px !important;
+}
+
+.p-multiselect-label{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  max-height: 100px !important;
+  overflow-y: auto !important;
+}
+
+.p-multiselect .p-multiselect-trigger{
+  display: none !important;
+}
+
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item, .p-multiselect-panel .p-multiselect-header, .p-multiselect.p-multiselect-chip .p-multiselect-token {
+  padding: 3px 6px !important;
+  font-size: 12px !important;
+}
+
+.p-tabview .p-tabview-panels {
+  padding: 1 !important;
+}
