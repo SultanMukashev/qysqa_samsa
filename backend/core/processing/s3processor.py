@@ -9,8 +9,6 @@ from pptx import Presentation
 
 import openai  # or your LLM library
 
-from dotenv import load_dotenv
-load_dotenv()
 
 class S3FileProcessor:
     def __init__(self, bucket_name, aws_access_key=None, aws_secret_key=None, endpoint_url=None):
@@ -68,10 +66,20 @@ class S3FileProcessor:
                 if hasattr(shape, "text"):
                     text_runs.append(shape.text)
         return " ".join(text_runs)
+    
+    def get_file_text(self, key):
+        file_stream = self.download_file(key)
+        return self.extract_text(file_stream, key)
 
-    def summarize_text(self, text):
+class TextSummarizer:
+    def __init__(self, api_key, model='gpt-3.5-turbo'):
+        import openai
+        self.openai = openai
+        self.openai.api_key = api_key
+        self.model = model
+
+    def summarize(self, text):
         # Replace this with your actual LLM API
-        openai.api_key = os.getenv("OPENAI_API_KEY")  # <-- Don't hardcode in production
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",  # Or gpt-4, etc.
             messages=[
@@ -82,9 +90,3 @@ class S3FileProcessor:
             temperature=0,
         )
         return response.choices[0].message.content
-
-    def process_and_summarize(self, key):
-        file_stream = self.download_file(key)
-        text = self.extract_text(file_stream, key)
-        summary = self.summarize_text(text)
-        return summary
