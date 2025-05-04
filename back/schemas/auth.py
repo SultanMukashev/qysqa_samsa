@@ -5,7 +5,7 @@ class AuthRequest(BaseModel):
     password: str
 
 class UserCreate(BaseModel):
-    username: str
+    student_id: str
     password: str
     name: str
     surname: str
