@@ -10,7 +10,7 @@ const HeaderUI = () => {
       </div>
       <div>
         <div className="w-[40px] h-[40px] flex flex-row items-center justify-center font-medium text-white text-sm rounded-full bg-sky-500">
-          {`${me?.firstname.slice(0, 1).toUpperCase()}${me?.lastname.slice(0, 1).toUpperCase()}`}
+          {`${me?.name.slice(0, 1).toUpperCase()}${me?.surname.slice(0, 1).toUpperCase()}`}
         </div>
       </div>
     </header>

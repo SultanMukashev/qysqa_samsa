@@ -1,11 +1,11 @@
 import { ApiResponseMessage } from "@/shared/types";
-import { GetCoursesResponse } from "./type";
 import api from "@/shared/api/useApi";
 import { AxiosError } from "axios";
+import { GetSingleCourseResponse } from "./type";
 
-export default async function getCourses (): Promise<ApiResponseMessage<GetCoursesResponse>> {
+export default async function getSingleCourse (id: number): Promise<ApiResponseMessage<GetSingleCourseResponse>> {
   try{
-    const response = await api.get<GetCoursesResponse>('/students/courses')
+    const response = await api.get<GetSingleCourseResponse>(`/students/courses/${id}`)
 
     return {
       ok: true,

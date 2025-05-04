@@ -3,14 +3,14 @@ import { ApiResponseMessage } from "@/shared/types";
 import { LoginRequest, LoginResponse } from "./type";
 import { AxiosError } from "axios";
 
-export async function login (request: LoginRequest): Promise<ApiResponseMessage<LoginResponse['data']>> {
+export async function login (request: LoginRequest): Promise<ApiResponseMessage<LoginResponse>> {
   try{
-    const response = await api.post<LoginResponse>('guest/auth', request)
+    const response = await api.post<LoginResponse>('students/auth', request)
 
     return {
       ok: true,
-      data: response.data.data,
-      message: response.data.message
+      data: response.data,
+      message: 'Successfully loged in!'
     }
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

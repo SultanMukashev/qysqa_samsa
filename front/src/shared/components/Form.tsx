@@ -103,12 +103,12 @@ const AppForm = <T extends FieldValues = FieldValues>({
         const fieldClasses = field.classes || '';
         return (
           <div key={field.name} className={fieldClasses}>
-            <label htmlFor={field.name} className="text-xs">{field.label}<span className='text-red-500'>{field.required && ' * '}</span></label>
+            <label htmlFor={field.name} className="text-sm">{field.label}<span className='text-red-500'>{field.required && ' * '}</span></label>
             <Controller
               name={field.name as keyof T as Path<T>}
               control={control}
               rules={{
-                required: field.required ? `${field.label} обязательно` : false,
+                required: field.required ? `${field.label} required` : false,
                 minLength: field.validation?.minLength,
                 maxLength: field.validation?.maxLength,
                 pattern: field.validation?.pattern,

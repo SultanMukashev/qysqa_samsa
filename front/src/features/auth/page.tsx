@@ -22,8 +22,8 @@ const LogInUI = () => {
 
   const fields: FormField[] = [
     {
-      name: 'username',
-      label: 'Username',
+      name: 'student_id',
+      label: 'Student ID',
       required: true,
       type: 'text',
       classes: 'col-start-1 col-end-4',
@@ -45,7 +45,7 @@ const LogInUI = () => {
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">
-      <div className="p-4 w-[350px] border border-neutral-300">
+      <div className="p-4 w-[350px] border rounded-md border-neutral-300">
         <AppForm fields={fields} onSubmit={(data) => onSubmit(data)} buttonTitle="Войти" buttonClass="w-[315px]"></AppForm>
       </div>
       <Toast ref={toast}></Toast>

@@ -3,7 +3,7 @@
 import axios, { AxiosError } from "axios"
 
 const api = axios.create({
-  baseURL: process.env.API_URL  || "http://localhost:8000",
+  baseURL: process.env.API_URL  || "http://192.168.20.144:8000",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -11,8 +11,8 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("id")
-  if (token) config.headers['Auth'] = `${token}`
+  const me = localStorage.getItem("me")
+  if (me && JSON.parse(me).user_id) config.headers['Auth'] = `${JSON.parse(me).user_id}`
   return config
 })
 
