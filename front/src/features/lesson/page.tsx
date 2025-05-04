@@ -35,6 +35,7 @@ const LessonUI = ({ id }: { id: number }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [file, setFile] = useState<File | null>(null)
   const teacher = localStorage.getItem('teacher')
+  const me = localStorage.getItem('me')
 
   useEffect(() => {
     fetchLesson(id)
@@ -60,16 +61,17 @@ const LessonUI = ({ id }: { id: number }) => {
     setIsLoading(true)
 
     try {
-      const res = await fetch("/api/lesson-chat", {
+      const res = await fetch("http://18.157.112.83:8082/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input, lessonId: id }),
+        body: JSON.stringify({ text: input }),
       })
 
       if (!res.ok) throw new Error('Network response was not ok')
 
       const data = await res.json()
-      const aiMsg: Message = { role: 'ai', text: data.reply ?? 'Sorry, I could not process your request.' }
+      console.log(data)
+      const aiMsg: Message = { role: 'ai', text: data.answer ?? 'Sorry, I could not process your request.' }
       setMessages((prev) => [...prev, aiMsg])
     } catch (error) {
       console.error('Error:', error)
@@ -123,6 +125,9 @@ const LessonUI = ({ id }: { id: number }) => {
 
               try {
                 const res = await fetch(`http://192.168.20.144:8000/teachers/lessons/${id}/upload`, {
+                  headers: {
+                    'Auth': me && JSON.parse(me).user_id
+                  },
                   method: "POST",
                   body: formData, 
                 })
@@ -150,23 +155,23 @@ const LessonUI = ({ id }: { id: number }) => {
         <h2 className="font-semibold text-xl mb-2">Ask AI</h2>
 
         <div className="flex-1 overflow-y-auto space-y-3 pr-1">
-          {messages.map((msg, i) => (
+        {messages.map((msg, i) => (
+          msg.role === 'ai' ? (
             <div
               key={i}
-              className={`rounded-lg px-3 py-2 max-w-[85%] text-sm ${
-                msg.role === 'user'
-                  ? 'bg-blue-100 dark:bg-blue-900 ml-auto text-right'
-                  : 'bg-neutral-100 dark:bg-neutral-800'
-              }`}
-              dangerouslySetInnerHTML={
-                msg.role === 'ai' 
-                  ? { __html: marked.parse(msg.text) } 
-                  : undefined
-              }
+              className="rounded-lg px-3 py-2 max-w-[85%] text-sm bg-neutral-100 dark:bg-neutral-800"
+              dangerouslySetInnerHTML={{ __html: marked.parse(msg.text) }}
+            />
+          ) : (
+            <div
+              key={i}
+              className="rounded-lg px-3 py-2 max-w-[85%] text-sm bg-blue-100 dark:bg-blue-900 ml-auto text-right"
             >
-              {msg.role === 'user' && msg.text}
+              {msg.text}
             </div>
-          ))}
+          )
+        ))}
+
           {isLoading && (
             <div className="bg-neutral-100 dark:bg-neutral-800 rounded-lg px-3 py-2 max-w-[85%]">
               <div className="animate-pulse">Thinking...</div>
