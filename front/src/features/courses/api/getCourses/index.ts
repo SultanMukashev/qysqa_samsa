@@ -4,6 +4,7 @@ import api from "@/shared/api/useApi";
 import { AxiosError } from "axios";
 
 export default async function getCourses (): Promise<ApiResponseMessage<GetCoursesResponse>> {
+
   try{
     const response = await api.get<GetCoursesResponse>('/students/courses')
 
@@ -13,6 +14,7 @@ export default async function getCourses (): Promise<ApiResponseMessage<GetCours
       message: 'Courses returned successfully'
     }
   }catch(error){
+    console.log(error)
     if (error instanceof AxiosError && error.response?.data){
       return {
         ok: false,

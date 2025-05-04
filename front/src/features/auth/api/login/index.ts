@@ -15,6 +15,7 @@ export async function login(
       message: "Successfully loged in!",
     };
   } catch (error) {
+    console.log(error)
     if (error instanceof AxiosError && error.response) {
       const message = error.response.data?.message || "Something went wrong!";
       return {
