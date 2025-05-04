@@ -3,7 +3,7 @@
 import axios, { AxiosError } from "axios"
 
 const api = axios.create({
-  baseURL: process.env.API_URL  || "http://192.168.20.144:8000",
+  baseURL: process.env.API_URL  || "http://46.101.215.10:8000/",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
