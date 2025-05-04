@@ -1,7 +1,7 @@
 # app/core/celery.py
 from celery import Celery
 from core.config import settings
-from db.database import SessionLocal
+from db.database import Session
 
 celery = Celery(
     "worker",
@@ -24,13 +24,13 @@ celery.conf.update(
 )
 
 # Инициализация сессии БД для задач
-@celery.task_postrun.connect
-def close_session(*args, **kwargs):
-    db = SessionLocal()
-    try:
-        db.close()
-    except Exception as e:
-        print(f"Error closing DB session: {e}")
+# @celery.task_postrun.connect
+# def close_session(*args, **kwargs):
+#     db = Session()
+#     try:
+#         db.close()
+#     except Exception as e:
+#         print(f"Error closing DB session: {e}")
 
 # Периодические задачи (пример)
 celery.conf.beat_schedule = {
