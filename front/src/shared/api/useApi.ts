@@ -12,7 +12,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const me = localStorage.getItem("me")
-  if (me && JSON.parse(me).user_id) config.headers['Auth'] = `${JSON.parse(me).user_id}`
+  if (me !== null && JSON.parse(me)?.user_id !== null) {config.headers['Auth'] = `${JSON.parse(me)?.user_id}`}
   return config
 })
 

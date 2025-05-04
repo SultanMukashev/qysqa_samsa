@@ -1,12 +1,12 @@
 import { ApiResponseMessage } from "@/shared/types";
-import { GetCoursesResponse } from "./type";
 import api from "@/shared/api/useApi";
 import { AxiosError } from "axios";
+import { GetMyCoursesResponse } from "./type";
 
-export default async function getCourses (): Promise<ApiResponseMessage<GetCoursesResponse>> {
+export default async function getMyCoursesTeacher (): Promise<ApiResponseMessage<GetMyCoursesResponse>> {
 
   try{
-    const response = await api.get<GetCoursesResponse>('/students/courses')
+    const response = await api.get<GetMyCoursesResponse>('/teachers/courses/my')
 
     return {
       ok: true,
@@ -14,7 +14,6 @@ export default async function getCourses (): Promise<ApiResponseMessage<GetCours
       message: 'Courses returned successfully'
     }
   }catch(error){
-    console.log(error)
     if (error instanceof AxiosError && error.response?.data){
       return {
         ok: false,

@@ -4,10 +4,12 @@ import { useCourses } from "./store"
 import { useEffect } from "react"
 
 const CoursesUI = () => {
-  const { courses, fetchCourses } = useCourses()
+  const { courses, fetchCourses, fetMyCoursesTeacher } = useCourses()
 
+  const teacher = localStorage.getItem('teacher')
   useEffect(() => {
-    fetchCourses()
+    if(teacher === 'true') fetMyCoursesTeacher() 
+      else fetchCourses()
   }, [])
   return(
     <div className="flex w-full flex-col gap-5">
