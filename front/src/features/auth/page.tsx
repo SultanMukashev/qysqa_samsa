@@ -8,9 +8,12 @@ import { LoginRequest } from "./api/login/type"
 import { useRouter } from "next/navigation"
 import { useMe } from "@/shared/store/useMe"
 
+import { TabPanel, TabView } from "primereact/tabview";
+import { LoginTeacherRequest } from "./api/loginTeacher/type";
+
 const LogInUI = () => {
 
-  const { fetchMe, isAuth } = useMe()
+  const { fetchMeStudent, fetchMeTeacher, isAuth } = useMe()
   const router = useRouter()
   const toast = useRef<Toast>(null)
 
@@ -18,9 +21,10 @@ const LogInUI = () => {
     if (isAuth()) {
       router.push('/')
     }
-  })
+  }, [])
+  
 
-  const fields: FormField[] = [
+  const fieldsStudent: FormField[] = [
     {
       name: 'student_id',
       label: 'Student ID',
@@ -37,17 +41,49 @@ const LogInUI = () => {
     }
   ]
 
-  const onSubmit = async (data: FieldValues) => {
-    const res = await fetchMe(data as LoginRequest)
+  const fieldsTeacher: FormField[] = [
+    {
+      name: 'id',
+      label: 'ID',
+      required: true,
+      type: 'text',
+      classes: 'col-start-1 col-end-4',
+    },
+    {
+      name: 'password',
+      type: 'password',
+      label: 'Password',
+      required: true,
+      classes: 'col-start-1 col-end-4',
+    }
+  ]
+
+  const onSubmitStudent = async (data: FieldValues) => {
+    const res = await fetchMeStudent(data as LoginRequest)
+    if (res.ok) {router.push('/'); return}
+    toast.current?.show({ severity: 'error', summary: 'Error', detail: res.message });
+  }
+
+  const onSubmitTeacher = async (data: FieldValues) => {
+    const res = await fetchMeTeacher(data as LoginTeacherRequest)
     if (res.ok) {router.push('/'); return}
     toast.current?.show({ severity: 'error', summary: 'Error', detail: res.message });
   }
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">
-      <div className="p-4 w-[350px] border rounded-md border-neutral-300">
-        <AppForm fields={fields} onSubmit={(data) => onSubmit(data)} buttonTitle="Войти" buttonClass="w-[315px]"></AppForm>
-      </div>
+      <TabView>
+        <TabPanel header="Student">
+          <div className="p-4 w-[350px] border rounded-md border-neutral-300">
+            <AppForm fields={fieldsStudent} onSubmit={(data) => onSubmitStudent(data)} buttonTitle="Войти" buttonClass="w-[315px]"></AppForm>
+          </div>
+        </TabPanel>
+        <TabPanel header="Teacher">
+          <div className="p-4 w-[350px] border rounded-md border-neutral-300">
+            <AppForm fields={fieldsTeacher} onSubmit={(data) => onSubmitTeacher(data)} buttonTitle="Войти" buttonClass="w-[315px]"></AppForm>
+          </div>
+        </TabPanel>
+      </TabView>
       <Toast ref={toast}></Toast>
     </div>
   )
