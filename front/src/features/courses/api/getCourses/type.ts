@@ -1,8 +1,6 @@
 export type GetCoursesResponse = {
-  message: string,
-  data: {
-    id: number,
-    title: string,
-    description: string
-  }[]
-}
+  course_id: number,
+  name: string,
+  description: string,
+  lessons_count: number
+}[]

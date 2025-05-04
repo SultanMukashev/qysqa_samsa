@@ -31,11 +31,11 @@ export default function RootLayout({
   const { isAuth } = useMe()
   const router = useRouter()
 
-  // useEffect(() => {
-  //   if (!isAuth()) {
-  //     router.push('/auth');
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (!isAuth()) {
+      router.push('/auth');
+    }
+  }, [])
 
   return (
     <html lang="en">
